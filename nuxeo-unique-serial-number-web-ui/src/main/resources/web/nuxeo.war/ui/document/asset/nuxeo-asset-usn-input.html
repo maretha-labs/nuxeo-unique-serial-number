@@ -1,0 +1,89 @@
+<!-- (C) Copyright 2026 Maretha.io. Licensed under the Apache License, Version 2.0. -->
+<dom-module id="nuxeo-asset-usn-input">
+  <template>
+    <style include="nuxeo-styles">
+      :host { display: block; margin: 16px 0; }
+      fieldset { padding: 12px; border: 1px solid var(--nuxeo-border, #ccc); }
+      label { display: inline-flex; align-items: center; gap: 8px; margin-inline-end: 12px; }
+      [hidden] { display: none !important; }
+      dd { margin: 0 0 8px; }
+    </style>
+    <fieldset>
+      <legend>[[i18n('asset.usn.section')]]</legend>
+      <template is="dom-if" if="[[assigned]]">
+        <dl>
+          <dt>[[i18n('asset.usn.string')]]</dt><dd>[[document.properties.usn:usn_string]]</dd>
+          <dt>[[i18n('asset.usn.long')]]</dt><dd>[[document.properties.usn:usn_long]]</dd>
+          <dt>[[i18n('asset.usn.date')]]</dt><dd>[[date]]</dd>
+        </dl>
+      </template>
+      <template is="dom-if" if="[[!assigned]]">
+        <label>
+          <input type="checkbox" checked="[[requested]]" on-change="_toggle" />
+          [[i18n('asset.usn.create')]]
+        </label>
+        <label hidden$="[[!requested]]">
+          [[i18n('asset.usn.date')]]
+          <input type="date" min="1000-01-01" max="9999-12-31"
+                 disabled$="[[!requested]]" required$="[[requested]]"
+                 value="[[date]]" on-change="_selectDate" />
+        </label>
+      </template>
+    </fieldset>
+  </template>
+  <script>
+    Polymer({
+      is: 'nuxeo-asset-usn-input',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+        mode: String,
+        document: { type: Object, notify: true, observer: '_reset' },
+        requested: Boolean,
+        assigned: Boolean,
+        date: String,
+      },
+
+      _reset(doc) {
+        if (!doc || !doc.properties) return;
+        const props = doc.properties;
+        this.assigned = this.mode === 'edit' &&
+          (props['usn:usn_string'] != null || props['usn:usn_long'] != null);
+        this.requested = !this.assigned && props['usn:generate_usn'] === true;
+        this._originalDate = this.requested ? null : props['usn:usn_date'];
+        const now = new Date();
+        const today = [now.getFullYear(), String(now.getMonth() + 1).padStart(2, '0'),
+          String(now.getDate()).padStart(2, '0')].join('-');
+        this.date = props['usn:usn_date'] ? String(props['usn:usn_date']).slice(0, 10) : today;
+        // The new-document endpoint on older servers can include empty generated fields.
+        // Neither create nor Apply to all should submit assigned serial numbers.
+        if (this.mode !== 'edit') {
+          delete props['usn:usn_string'];
+          delete props['usn:usn_long'];
+        }
+      },
+
+      _toggle(e) {
+        if (this.assigned) return;
+        this.requested = e.target.checked;
+        this._writeIntent();
+      },
+
+      _selectDate(e) {
+        this.date = e.target.value;
+        if (this.requested) this._writeIntent();
+      },
+
+      _writeIntent() {
+        this.set('document.properties.usn:generate_usn', this.requested);
+        const date = this.requested ? (this.date ? this.date + 'T12:00:00.000Z' : null) : this._originalDate;
+        this.set('document.properties.usn:usn_date', date || null);
+      },
+
+      validate() {
+        if (!this.requested || this.assigned) return true;
+        const input = this.shadowRoot.querySelector('input[type=date]');
+        return !!input && input.reportValidity();
+      },
+    });
+  </script>
+</dom-module>

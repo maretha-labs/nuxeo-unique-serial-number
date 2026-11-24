@@ -1,0 +1,155 @@
+<!--
+(C) Copyright 2026 Maretha.io
+Licensed under the Apache License, Version 2.0
+-->
+<dom-module id="nuxeo-asset-metadata-layout">
+  <template>
+    <style include="nuxeo-styles">
+      .usn-mono {
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-weight: 600;
+        letter-spacing: 0.03em;
+      }
+
+      .facet-meta {
+        margin-top: 12px;
+        padding-top: 10px;
+        border-top: 1px solid var(--nuxeo-border, #e0e0e0);
+      }
+    </style>
+
+    <div role="widget">
+      <label>[[i18n('label.dublincore.title')]]</label>
+      <div name="title">[[document.properties.dc:title]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[!document.properties.usn:usn_string]]">
+      <label>[[i18n('asset.usn.string')]]</label>
+      <div name="usnString" class="usn-mono">[[document.properties.usn:usn_string]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[!document.properties.usn:usn_long]]">
+      <label>[[i18n('asset.usn.long')]]</label>
+      <div name="usnLong" class="usn-mono">[[document.properties.usn:usn_long]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[!document.properties.usn:usn_date]]">
+      <label>[[i18n('asset.usn.date')]]</label>
+      <div name="usnDate">[[_formatDateOnly(document.properties.usn:usn_date)]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[!document.properties.dc:description]]">
+      <label>[[i18n('label.dublincore.description')]]</label>
+      <div name="description" class="multiline">[[document.properties.dc:description]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[!document.properties.dc:nature]]">
+      <label>[[i18n('label.dublincore.nature')]]</label>
+      <div name="nature">[[formatDirectory(document.properties.dc:nature)]]</div>
+    </div>
+
+    <nuxeo-directory-suggestion
+      role="widget"
+      label="[[i18n('label.dublincore.subjects')]]"
+      directory-name="l10nsubjects"
+      name="subjects"
+      value="{{document.properties.dc:subjects}}"
+      hidden$="[[!document.properties.dc:subjects.length]]"
+      multiple="true"
+      dbl10n="true"
+      readonly
+    ></nuxeo-directory-suggestion>
+
+    <div role="widget" hidden$="[[!document.properties.dc:coverage]]">
+      <label>[[i18n('label.dublincore.coverage')]]</label>
+      <div name="coverage">[[formatDirectory(document.properties.dc:coverage)]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[!document.properties.dc:expired]]">
+      <label>[[i18n('label.dublincore.expire')]]</label>
+      <nuxeo-date
+        name="expired"
+        aria-label$="[[i18n('label.dublincore.expire')]]"
+        datetime="[[document.properties.dc:expired]]"
+      ></nuxeo-date>
+    </div>
+
+    <!-- Picture facet technical metadata -->
+    <template is="dom-if" if="[[hasFacet(document, 'Picture')]]">
+      <div class="facet-meta" name="pictureFacetMeta">
+        <div role="widget" hidden$="[[!document.properties.picture:info.width]]">
+          <label>[[i18n('asset.picture.dimensions')]]</label>
+          <div>[[document.properties.picture:info.width]] × [[document.properties.picture:info.height]]</div>
+        </div>
+        <div role="widget" hidden$="[[!document.properties.picture:info.format]]">
+          <label>[[i18n('asset.picture.format')]]</label>
+          <div>[[document.properties.picture:info.format]]</div>
+        </div>
+        <div role="widget" hidden$="[[!document.properties.picture:info.colorSpace]]">
+          <label>[[i18n('asset.picture.colorSpace')]]</label>
+          <div>[[document.properties.picture:info.colorSpace]]</div>
+        </div>
+      </div>
+    </template>
+
+    <!-- Video facet technical metadata -->
+    <template is="dom-if" if="[[hasFacet(document, 'Video')]]">
+      <div class="facet-meta" name="videoFacetMeta">
+        <div role="widget" hidden$="[[!document.properties.vid:info.width]]">
+          <label>[[i18n('asset.video.dimensions')]]</label>
+          <div>[[document.properties.vid:info.width]] × [[document.properties.vid:info.height]]</div>
+        </div>
+        <div role="widget" hidden$="[[!document.properties.vid:info.duration]]">
+          <label>[[i18n('asset.video.duration')]]</label>
+          <div>[[_formatDuration(document.properties.vid:info.duration)]]</div>
+        </div>
+      </div>
+    </template>
+
+    <!-- Audio facet technical metadata -->
+    <template is="dom-if" if="[[hasFacet(document, 'Audio')]]">
+      <div class="facet-meta" name="audioFacetMeta">
+        <div role="widget" hidden$="[[!document.properties.aud:duration]]">
+          <label>[[i18n('asset.audio.duration')]]</label>
+          <div>[[_formatDuration(document.properties.aud:duration)]]</div>
+        </div>
+      </div>
+    </template>
+
+    <!-- Attachments (shown on File and Video Assets, matching stock Web UI) -->
+    <template is="dom-if" if="[[_showAttachments(document)]]">
+      <nuxeo-document-attachments role="widget" document="[[document]]"></nuxeo-document-attachments>
+    </template>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-asset-metadata-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+        /**
+         * @doctype Asset
+         */
+        document: Object,
+      },
+
+      _formatDateOnly(val) {
+        return val ? String(val).slice(0, 10) : '';
+      },
+
+      _formatDuration(seconds) {
+        const total = Number(seconds);
+        if (!Number.isFinite(total) || total < 0) {
+          return '';
+        }
+        const mins = Math.floor(total / 60);
+        const secs = Math.floor(total % 60);
+        return `${mins}:${String(secs).padStart(2, '0')}`;
+      },
+
+      _showAttachments(doc) {
+        return Boolean(doc && !this.hasFacet(doc, 'Picture') && !this.hasFacet(doc, 'Audio'));
+      },
+    });
+  </script>
+</dom-module>

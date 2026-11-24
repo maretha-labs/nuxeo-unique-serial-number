@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.maretha.io/ecm/schemas/usn/"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:nxs="http://www.maretha.io/ecm/schemas/usn/">
+
+  <xs:element name="usn_date" type="xs:date" />
+  <xs:element name="usn_string" type="xs:string" />
+  <xs:element name="usn_long" type="xs:long" />
+  <xs:element name="generate_usn" type="xs:boolean" default="false" />
+
+</xs:schema>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="io.maretha.asset.usn.test.picture.placeholder">
+  <!-- In a test bundle the stock placeholder still has its pre-deployment web/ prefix. -->
+  <extension target="org.nuxeo.runtime.ConfigurationService" point="configuration">
+    <property name="nuxeo.picture.views.empty.picture.view">web/nuxeo.war/img/empty_picture.png</property>
+  </extension>
+</component>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="io.maretha.asset.usn.listeners">
+
+  <require>org.nuxeo.ecm.core.event.EventServiceComponent</require>
+
+  <extension target="org.nuxeo.ecm.core.event.EventServiceComponent" point="listener">
+    <!-- Priority 5: runs before AssetMediaFacetListener (10) and Nuxeo media listeners (20) -->
+    <listener name="usnValidationListener" async="false" postCommit="false"
+              class="io.maretha.asset.usn.listener.UsnValidationListener" priority="5">
+      <event>aboutToCreate</event>
+      <event>beforeDocumentModification</event>
+      <event>aboutToImport</event>
+      <event>beforeRestoringDocument</event>
+      <event>documentRestored</event>
+    </listener>
+
+    <!-- Clears copied values after native DBS copy and before the ordinary copy call returns -->
+    <listener name="usnCopyListener" async="false" postCommit="false"
+              class="io.maretha.asset.usn.listener.UsnCopyListener" priority="10">
+      <event>aboutToCopy</event>
+      <event>documentCreatedByCopy</event>
+    </listener>
+
+  </extension>
+
+</component>

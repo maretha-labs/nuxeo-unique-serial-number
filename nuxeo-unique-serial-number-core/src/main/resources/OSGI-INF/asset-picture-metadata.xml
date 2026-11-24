@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="io.maretha.asset.usn.picture.metadata">
+  <extension target="org.nuxeo.ecm.platform.actions.ActionService" point="filters">
+    <filter id="marethaAssetWithPictureFacet">
+      <rule grant="true">
+        <type>Asset</type>
+        <facet>Picture</facet>
+      </rule>
+    </filter>
+  </extension>
+  <extension target="org.nuxeo.binary.metadata" point="metadataRules">
+    <rule id="marethaAssetPictureMetadata" order="0" enabled="true" async="false">
+      <metadataMappings>
+        <metadataMapping-id>EXIF</metadataMapping-id>
+        <metadataMapping-id>IPTC</metadataMapping-id>
+      </metadataMappings>
+      <filters>
+        <filter-id>marethaAssetWithPictureFacet</filter-id>
+      </filters>
+    </rule>
+  </extension>
+</component>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="io.maretha.asset.usn.ui.types">
+
+  <extension target="org.nuxeo.ecm.platform.types.TypeService" point="types">
+    <type id="Asset">
+      <label>Asset</label>
+      <icon>/icons/file.gif</icon>
+      <bigIcon>/icons/file_100.png</bigIcon>
+      <category>SimpleDocument</category>
+      <description>Asset document with dynamic media facets and optional Unique Serial Number (USN)</description>
+      <default-view>view_documents</default-view>
+    </type>
+  </extension>
+
+</component>

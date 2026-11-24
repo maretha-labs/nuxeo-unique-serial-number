@@ -1,0 +1,100 @@
+<!--
+(C) Copyright 2026 Maretha.io
+Licensed under the Apache License, Version 2.0
+-->
+<link rel="import" href="nuxeo-asset-usn-input.html" />
+<dom-module id="nuxeo-asset-edit-layout">
+  <template>
+    <style include="nuxeo-styles">.inputclass { margin-bottom: 12px; }</style>
+
+    <div class="inputclass">
+      <nuxeo-input
+        role="widget"
+        label="[[i18n('title')]]"
+        name="title"
+        value="{{document.properties.dc:title}}"
+        autofocus
+        required
+        id="inputElem"
+        error-message="[[i18n('title.err')]]"
+        on-value-changed="_validateOnChange"
+      ></nuxeo-input>
+    </div>
+
+    <nuxeo-textarea
+      role="widget"
+      label="[[i18n('label.description')]]"
+      name="description"
+      value="{{document.properties.dc:description}}"
+    ></nuxeo-textarea>
+
+    <nuxeo-dropzone
+      role="widget"
+      label="[[i18n('file.content')]]"
+      name="content"
+      value="{{document.properties.file:content}}"
+    ></nuxeo-dropzone>
+
+    <nuxeo-asset-usn-input id="usn" mode="edit" document="{{document}}"></nuxeo-asset-usn-input>
+
+    <nuxeo-directory-suggestion
+      role="widget"
+      label="[[i18n('label.dublincore.nature')]]"
+      name="nature"
+      directory-name="nature"
+      value="{{document.properties.dc:nature}}"
+      placeholder="[[i18n('dublincoreEdit.directorySuggestion.placeholder')]]"
+      min-chars="0"
+    ></nuxeo-directory-suggestion>
+
+    <nuxeo-directory-suggestion
+      role="widget"
+      label="[[i18n('label.dublincore.subjects')]]"
+      directory-name="l10nsubjects"
+      name="subjects"
+      value="{{document.properties.dc:subjects}}"
+      multiple="true"
+      dbl10n="true"
+      placeholder="[[i18n('dublincoreEdit.directorySuggestion.placeholder')]]"
+      min-chars="0"
+    ></nuxeo-directory-suggestion>
+
+    <nuxeo-directory-suggestion
+      role="widget"
+      label="[[i18n('label.dublincore.coverage')]]"
+      directory-name="l10ncoverage"
+      name="coverage"
+      value="{{document.properties.dc:coverage}}"
+      dbl10n="true"
+      placeholder="[[i18n('dublincoreEdit.directorySuggestion.placeholder')]]"
+      min-chars="0"
+    ></nuxeo-directory-suggestion>
+
+    <nuxeo-date-picker
+      role="widget"
+      label="[[i18n('label.dublincore.expire')]]"
+      name="expired"
+      value="{{document.properties.dc:expired}}"
+      aria-label$="[[i18n('label.dublincore.expire')]]"
+    ></nuxeo-date-picker>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-asset-edit-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+        /** @doctype Asset */
+        document: { type: Object, notify: true },
+      },
+
+      validate() {
+        return this.$.inputElem.validate() && this.$.usn.validate();
+      },
+
+      _validateOnChange() {
+        this.$.inputElem.validate();
+      },
+    });
+  </script>
+</dom-module>

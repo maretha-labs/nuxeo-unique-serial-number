@@ -1,0 +1,22 @@
+{
+  "label.document.type.asset": "Asset",
+  "asset.usn.section": "Numéro de série unique (USN)",
+  "asset.usn.create": "Créer un USN",
+  "asset.usn.date": "Date USN",
+  "asset.usn.date.required": "La date USN est requise pour créer un USN.",
+  "asset.usn.string": "USN (Chaîne)",
+  "asset.usn.long": "USN (Nombre)",
+  "asset.usn.immutable": "Un USN attribué ne peut être ni modifié ni supprimé.",
+  "asset.usn.importHint": "Chaque Asset importé recevra son propre USN unique pour la date USN sélectionnée.",
+  "asset.usn.copy": "Copier l'USN",
+  "asset.usn.copied": "USN copié dans le presse-papiers",
+  "asset.audio.info": "Informations audio",
+  "asset.audio.duration": "Durée",
+  "asset.picture.info": "Informations image",
+  "asset.picture.dimensions": "Dimensions",
+  "asset.picture.format": "Format",
+  "asset.picture.colorSpace": "Espace colorimétrique",
+  "asset.video.info": "Informations vidéo",
+  "asset.video.duration": "Durée",
+  "asset.video.dimensions": "Dimensions"
+}

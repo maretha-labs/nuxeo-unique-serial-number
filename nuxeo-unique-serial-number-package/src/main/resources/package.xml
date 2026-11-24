@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package type="addon" name="nuxeo-unique-serial-number" version="@VERSION@">
+  <title>Nuxeo Unique Serial Number (Asset USN)</title>
+  <description>
+    <p>Provides the Asset document type (extending File) with dynamic Picture/Video/Audio facets, unique serial numbers
+      (usn:usn_string, usn:usn_long, usn:usn_date) reserved via Nuxeo KeyValueStore, and Web UI layouts.</p>
+  </description>
+  <vendor>Maretha.io</vendor>
+  <installer restart="true" />
+  <uninstaller restart="true" />
+  <nuxeo-validation>none</nuxeo-validation>
+  <production-state>testing</production-state>
+  <supported>false</supported>
+  <dependencies>
+    <package>nuxeo-web-ui</package>
+  </dependencies>
+  <target-platform>
+    <name>lts</name>
+    <version>@NUXEO_TARGET_VERSION@</version>
+  </target-platform>
+  <license>Apache License, Version 2.0</license>
+  <license-url>https://www.apache.org/licenses/LICENSE-2.0</license-url>
+  <visibility>PUBLIC</visibility>
+</package>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="io.maretha.asset.usn.service">
+
+  <require>org.nuxeo.runtime.kv.KeyValueService</require>
+
+  <implementation class="io.maretha.asset.usn.service.UsnServiceImpl" />
+
+  <service>
+    <provide interface="io.maretha.asset.usn.service.UsnService" />
+  </service>
+
+</component>

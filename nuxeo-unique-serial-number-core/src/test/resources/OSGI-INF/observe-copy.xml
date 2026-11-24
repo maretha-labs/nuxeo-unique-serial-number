@@ -1,0 +1,8 @@
+<component name="io.maretha.asset.usn.tests.observeCopy">
+  <extension target="org.nuxeo.ecm.core.event.EventServiceComponent" point="listener">
+    <listener name="observeFirstVisibleCopy" async="false" postCommit="false" priority="1"
+              class="io.maretha.asset.usn.TestNativeCopyVisibility$Observer">
+      <event>documentCreatedByCopy</event>
+    </listener>
+  </extension>
+</component>

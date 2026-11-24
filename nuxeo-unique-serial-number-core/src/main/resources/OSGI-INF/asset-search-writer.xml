@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<component name="io.maretha.asset.usn.search.writer">
+  <implementation class="io.maretha.asset.usn.search.AssetSearchContribution" />
+</component>

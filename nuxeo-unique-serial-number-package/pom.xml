@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>io.maretha.asset.usn</groupId>
+    <artifactId>nuxeo-unique-serial-number-parent</artifactId>
+    <version>${revision}</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>nuxeo-unique-serial-number-package</artifactId>
+  <packaging>zip</packaging>
+  <name>Nuxeo Unique Serial Number Package</name>
+  <description>Nuxeo Marketplace package deploying core and Polymer Web UI bundles for Asset USN.</description>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.nuxeo.ecm.distribution</groupId>
+      <artifactId>nuxeo-nxr-server</artifactId>
+      <type>zip</type>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.maretha.asset.usn</groupId>
+      <artifactId>nuxeo-unique-serial-number-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.maretha.asset.usn</groupId>
+      <artifactId>nuxeo-unique-serial-number-web-ui</artifactId>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.nuxeo.build</groupId>
+        <artifactId>ant-assembly-maven-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <buildFiles>
+            <buildFile>${basedir}/src/main/assemble/assembly.xml</buildFile>
+          </buildFiles>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>io.maretha.asset.usn</groupId>
+  <artifactId>nuxeo-unique-serial-number-parent</artifactId>
+  <version>${revision}</version>
+  <packaging>pom</packaging>
+  <name>Nuxeo Unique Serial Number (Asset USN)</name>
+  <description>Open-source Nuxeo add-on providing the Asset document type with dynamic media facets (Picture, Video, Audio), matching string and long serial numbers assigned through Nuxeo’s key/value service, and Web UI layouts.</description>
+
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+    </license>
+  </licenses>
+
+  <properties>
+    <revision>1.0.0-lts2023-SNAPSHOT</revision>
+    <nuxeo.platform.version>2023.54.20</nuxeo.platform.version>
+    <nuxeo.target.version>[2023.54,2024.0)</nuxeo.target.version>
+    <maven.compiler.release>17</maven.compiler.release>
+    <ant.assembly.version>2.1.7</ant.assembly.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+  </properties>
+
+  <modules>
+    <module>nuxeo-unique-serial-number-core</module>
+    <module>nuxeo-unique-serial-number-web-ui</module>
+    <module>nuxeo-unique-serial-number-package</module>
+  </modules>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.nuxeo</groupId>
+        <artifactId>nuxeo-ecm</artifactId>
+        <version>${nuxeo.platform.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>io.maretha.asset.usn</groupId>
+        <artifactId>nuxeo-unique-serial-number-core</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.maretha.asset.usn</groupId>
+        <artifactId>nuxeo-unique-serial-number-web-ui</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <build>
+    <directory>${project.basedir}/target/${nuxeo.platform.version}</directory>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>3.4.1</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>3.3.1</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.14.1</version>
+          <configuration>
+            <release>${maven.compiler.release}</release>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>3.4.2</version>
+          <configuration>
+            <archive>
+              <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
+              <manifestEntries>
+                <Bundle-ManifestVersion>2</Bundle-ManifestVersion>
+              </manifestEntries>
+            </archive>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>3.5.2</version>
+          <configuration>
+            <runOrder>alphabetical</runOrder>
+            <argLine>-Xmx1g -Dfile.encoding=UTF-8 --add-exports=java.base/jdk.internal.ref=ALL-UNNAMED --add-exports=java.base/sun.nio.ch=ALL-UNNAMED --add-exports=jdk.unsupported/sun.misc=ALL-UNNAMED --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.io=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED</argLine>
+            <includes>
+              <include>**/Test*.java</include>
+              <include>**/*Test.java</include>
+            </includes>
+            <excludes>
+              <exclude>**/*Test*$*.java</exclude>
+            </excludes>
+            <trimStackTrace>false</trimStackTrace>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.nuxeo.build</groupId>
+          <artifactId>ant-assembly-maven-plugin</artifactId>
+          <version>${ant.assembly.version}</version>
+          <extensions>true</extensions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
+  <repositories>
+    <repository>
+      <id>maven-public</id>
+      <url>https://packages.nuxeo.com/repository/maven-public/</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>maven-public</id>
+      <url>https://packages.nuxeo.com/repository/maven-public/</url>
+    </pluginRepository>
+  </pluginRepositories>
+</project>

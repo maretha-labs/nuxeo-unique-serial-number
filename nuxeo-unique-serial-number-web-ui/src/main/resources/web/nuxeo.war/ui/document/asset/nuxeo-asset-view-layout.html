@@ -1,0 +1,144 @@
+<!--
+(C) Copyright 2026 Maretha.io
+Licensed under the Apache License, Version 2.0
+-->
+<dom-module id="nuxeo-asset-view-layout">
+  <template>
+    <style include="nuxeo-styles">
+      *[role='widget'] {
+        @apply --paper-card;
+      }
+
+      .usn-banner {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 10px 16px;
+        margin-bottom: 12px;
+        background: var(--nuxeo-box, #fff);
+        border: 1px solid var(--nuxeo-border, #e0e0e0);
+        border-radius: 4px;
+      }
+
+      .usn-banner-items {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+
+      .usn-banner-item label {
+        display: block;
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        color: var(--nuxeo-text-light, #666);
+      }
+
+      .usn-mono {
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-weight: 600;
+        letter-spacing: 0.03em;
+      }
+
+      .audio-card {
+        padding: 16px;
+        margin-top: 12px;
+      }
+
+      .audio-card h4 {
+        margin: 0 0 8px 0;
+      }
+    </style>
+
+    <!-- Read-only USN banner when assigned -->
+    <template is="dom-if" if="[[document.properties.usn:usn_string]]">
+      <div class="usn-banner" name="usnBanner">
+        <div class="usn-banner-items">
+          <div class="usn-banner-item">
+            <label>[[i18n('asset.usn.string')]]</label>
+            <span class="usn-mono" name="usnString">[[document.properties.usn:usn_string]]</span>
+          </div>
+          <div class="usn-banner-item">
+            <label>[[i18n('asset.usn.long')]]</label>
+            <span class="usn-mono" name="usnLong">[[document.properties.usn:usn_long]]</span>
+          </div>
+          <template is="dom-if" if="[[document.properties.usn:usn_date]]">
+            <div class="usn-banner-item">
+              <label>[[i18n('asset.usn.date')]]</label>
+              <span name="usnDate">[[_formatDateOnly(document.properties.usn:usn_date)]]</span>
+            </div>
+          </template>
+        </div>
+        <paper-button noink on-tap="_copyUsn">[[i18n('asset.usn.copy')]]</paper-button>
+      </div>
+    </template>
+
+    <!-- Main viewer handles Picture, Video, Audio, PDF, and generic File blobs -->
+    <nuxeo-document-viewer role="widget" document="[[document]]"></nuxeo-document-viewer>
+
+    <!-- Video facet view widgets (matching nuxeo-video-view-layout) -->
+    <template is="dom-if" if="[[hasFacet(document, 'Video')]]">
+      <nuxeo-video-info role="widget" document="[[document]]"></nuxeo-video-info>
+      <nuxeo-video-conversions
+        role="widget"
+        document="[[document]]"
+        label="[[i18n('videoViewLayout.conversions')]]"
+      ></nuxeo-video-conversions>
+    </template>
+
+    <!-- Audio facet view card -->
+    <template is="dom-if" if="[[hasFacet(document, 'Audio')]]">
+      <div role="widget" class="audio-card" name="audioInfoCard">
+        <h4>[[i18n('asset.audio.info')]]</h4>
+        <template is="dom-if" if="[[document.properties.aud:duration]]">
+          <div>
+            <label>[[i18n('asset.audio.duration')]]:</label>
+            <span>[[_formatDuration(document.properties.aud:duration)]]</span>
+          </div>
+        </template>
+        <template is="dom-if" if="[[document.properties.file:content.name]]">
+          <div>[[document.properties.file:content.name]] ([[document.properties.file:content.mime-type]])</div>
+        </template>
+      </div>
+    </template>
+
+    <!-- Note: when facet Picture is present, nuxeo-web-ui's built-in pictureDocumentViewPage
+         automatically renders Picture Info, Formats, EXIF, and IPTC cards below the document page. -->
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-asset-view-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+        /**
+         * @doctype Asset
+         */
+        document: Object,
+      },
+
+      _formatDateOnly(val) {
+        return val ? String(val).slice(0, 10) : '';
+      },
+
+      _formatDuration(seconds) {
+        const total = Number(seconds);
+        if (!Number.isFinite(total) || total < 0) {
+          return '';
+        }
+        const mins = Math.floor(total / 60);
+        const secs = Math.floor(total % 60);
+        return `${mins}:${String(secs).padStart(2, '0')}`;
+      },
+
+      _copyUsn() {
+        const val = this.document && this.document.properties && this.document.properties['usn:usn_string'];
+        if (val && navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(String(val));
+          this.fire('notify', { message: this.i18n('asset.usn.copied') });
+        }
+      },
+    });
+  </script>
+</dom-module>

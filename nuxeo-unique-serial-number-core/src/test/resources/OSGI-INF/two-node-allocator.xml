@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<component name="io.maretha.asset.usn.tests.shared-kv">
+  <require>org.nuxeo.runtime.datasource</require>
+  <extension target="org.nuxeo.runtime.datasource" point="datasources">
+    <datasource name="jdbc/shared-usn-test" driverClassName="org.h2.Driver">
+      <property name="url">${usn.test.kvUrl}</property>
+      <property name="username">sa</property>
+    </datasource>
+  </extension>
+  <extension target="org.nuxeo.runtime.kv.KeyValueService" point="configuration">
+    <store name="default" class="org.nuxeo.ecm.core.storage.sql.kv.SQLKeyValueStore">
+      <property name="datasource">jdbc/shared-usn-test</property>
+      <property name="table">kv</property>
+    </store>
+  </extension>
+</component>

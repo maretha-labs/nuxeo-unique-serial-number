@@ -1,0 +1,22 @@
+{
+  "label.document.type.asset": "Asset",
+  "asset.usn.section": "Unique Serial Number (USN)",
+  "asset.usn.create": "Create USN",
+  "asset.usn.date": "USN Date",
+  "asset.usn.date.required": "USN Date is required to create a USN.",
+  "asset.usn.string": "USN (String)",
+  "asset.usn.long": "USN (Number)",
+  "asset.usn.immutable": "Assigned USNs cannot be edited or removed.",
+  "asset.usn.importHint": "Each imported Asset will receive its own unique USN for the selected USN Date.",
+  "asset.usn.copy": "Copy USN",
+  "asset.usn.copied": "USN copied to clipboard",
+  "asset.audio.info": "Audio Information",
+  "asset.audio.duration": "Duration",
+  "asset.picture.info": "Picture Information",
+  "asset.picture.dimensions": "Dimensions",
+  "asset.picture.format": "Format",
+  "asset.picture.colorSpace": "Color Space",
+  "asset.video.info": "Video Information",
+  "asset.video.duration": "Duration",
+  "asset.video.dimensions": "Dimensions"
+}

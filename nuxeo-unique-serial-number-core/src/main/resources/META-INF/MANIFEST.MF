@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Nuxeo Unique Serial Number Core
+Bundle-SymbolicName: io.maretha.asset.usn.core;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Vendor: Maretha
+Bundle-ActivationPolicy: lazy
+Nuxeo-Component: OSGI-INF/asset-core-types-contrib.xml,
+ OSGI-INF/asset-usn-service.xml,
+ OSGI-INF/asset-listeners-contrib.xml,
+ OSGI-INF/asset-search-writer.xml,
+ OSGI-INF/asset-media.xml,
+ OSGI-INF/asset-picture-metadata.xml,
+ OSGI-INF/asset-operations-contrib.xml,
+ OSGI-INF/asset-ui-types-contrib.xml

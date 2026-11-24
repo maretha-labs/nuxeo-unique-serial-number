@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="io.maretha.asset.usn.media">
+  <require>io.maretha.asset.usn.core.types</require>
+  <implementation class="io.maretha.asset.usn.listener.AssetVideoConversions"/>
+  <service>
+    <provide interface="io.maretha.asset.usn.listener.AssetVideoConversions"/>
+  </service>
+  <extension target="org.nuxeo.ecm.core.schema.TypeService" point="schema">
+    <schema name="asset_media" prefix="assetmedia" src="schemas/asset-media.xsd"/>
+    <property schema="asset_media" name="generation" secured="true"/>
+  </extension>
+  <extension target="org.nuxeo.ecm.core.schema.TypeService" point="doctype">
+    <doctype name="Asset" append="true">
+      <schema name="asset_media"/>
+    </doctype>
+  </extension>
+  <extension target="org.nuxeo.ecm.core.event.EventServiceComponent" point="listener">
+    <listener name="assetMediaFacetListener" async="false" postCommit="false"
+              class="io.maretha.asset.usn.listener.AssetMediaFacetListener" priority="10">
+      <event>aboutToCreate</event>
+      <event>aboutToImport</event>
+      <event>beforeDocumentModification</event>
+      <event>documentCreated</event>
+      <event>documentImported</event>
+      <event>documentModified</event>
+      <event>documentRestored</event>
+      <event>documentCreatedByCopy</event>
+    </listener>
+    <listener name="assetFinalBlobChange" async="false" postCommit="false"
+              class="io.maretha.asset.usn.listener.FinalAssetBlobChange" priority="10000">
+      <event>beforeDocumentModification</event>
+    </listener>
+    <listener name="assetMediaProcessor" async="true" postCommit="true"
+              class="io.maretha.asset.usn.listener.AssetMediaProcessor">
+      <event>assetMediaGenerationRequested</event>
+    </listener>
+    <listener name="assetMediaTranscoder" async="true" postCommit="true"
+              class="io.maretha.asset.usn.listener.AssetMediaProcessor">
+      <event>assetVideoConversionRequested</event>
+    </listener>
+  </extension>
+  <extension target="org.nuxeo.ecm.core.work.service" point="queues">
+    <queue id="assetMediaPreview">
+      <maxThreads>2</maxThreads>
+      <category>assetMediaProcessor</category>
+    </queue>
+    <queue id="assetMediaTranscode">
+      <maxThreads>2</maxThreads>
+      <category>assetMediaTranscoder</category>
+    </queue>
+  </extension>
+  <extension target="org.nuxeo.ecm.core.operation.OperationServiceComponent" point="operations">
+    <operation class="io.maretha.asset.usn.operation.RecomputeAssetMedia"/>
+  </extension>
+</component>
