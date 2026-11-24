@@ -19,10 +19,10 @@
   </licenses>
 
   <properties>
-    <revision>1.0.0-lts2023-SNAPSHOT</revision>
-    <nuxeo.platform.version>2023.54.20</nuxeo.platform.version>
-    <nuxeo.target.version>[2023.54,2024.0)</nuxeo.target.version>
-    <maven.compiler.release>17</maven.compiler.release>
+    <revision>1.0.0-lts2025-SNAPSHOT</revision>
+    <nuxeo.platform.version>2025.26.16</nuxeo.platform.version>
+    <nuxeo.target.version>[2025.26,2026.0)</nuxeo.target.version>
+    <maven.compiler.release>21</maven.compiler.release>
     <ant.assembly.version>2.1.7</ant.assembly.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>

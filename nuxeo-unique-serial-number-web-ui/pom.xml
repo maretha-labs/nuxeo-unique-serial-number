@@ -12,5 +12,5 @@
 
   <artifactId>nuxeo-unique-serial-number-web-ui</artifactId>
   <name>Nuxeo Unique Serial Number Web UI</name>
-  <description>Asset layouts for Nuxeo Web UI on LTS 2023.</description>
+  <description>Asset layouts for Nuxeo Web UI and Maretha Angular Web UI.</description>
 </project>

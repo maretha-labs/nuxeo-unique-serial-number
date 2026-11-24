@@ -1,0 +1,10 @@
+<component name="io.maretha.asset.usn.test.search.index">
+  <extension target="org.nuxeo.ecm.core.search.client.repository" point="searchClient">
+    <searchClient name="repository" searchIndex="stock-fixture" repository="test"/>
+  </extension>
+  <extension target="org.nuxeo.ecm.core.search" point="searchIndex">
+    <searchIndex name="stock-fixture" searchClient="repository" repository="test" default="true"/>
+    <searchIndex name="custom-fixture" searchClient="repository" repository="test"
+                 writerClass="io.maretha.asset.usn.search.TestAssetSearchWriter$CustomWriter"/>
+  </extension>
+</component>

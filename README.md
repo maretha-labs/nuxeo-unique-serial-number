@@ -4,7 +4,7 @@ This Apache-2.0 add-on defines an `Asset` document type extending `File`. A numb
 
 ## Release status
 
-The `2023` branch targets Nuxeo LTS 2023.54 with Nuxeo Web UI (Polymer). The Marketplace package’s production state is **testing**. For Nuxeo LTS 2025 and the Maretha Angular Web UI layouts, use the [2025 branch](https://github.com/maretha-labs/nuxeo-unique-serial-number/tree/2025).
+This branch targets Nuxeo LTS 2025.26. The Marketplace package is in **testing**. For LTS 2023, use the [2023 branch](https://github.com/maretha-labs/nuxeo-unique-serial-number/tree/2023).
 
 ## Numbering an Asset
 
@@ -54,13 +54,13 @@ The Asset stores its USN fields as ordinary Nuxeo document properties. They rema
 
 ## Build and install
 
-Build this branch with Java 17 and Maven from the repository root.
+Build the `2025` branch with JDK 21 and Maven against Nuxeo 2025.26.16.
 
 ```sh
 mvn clean package
 ```
 
-The build targets Nuxeo 2023.54.20 and writes the Marketplace ZIP under `nuxeo-unique-serial-number-package/target/2023.54.20/`. Install it with `nuxeoctl mp-install <path-to-zip>` on a stopped server with the matching Nuxeo Web UI package. The [UI module](nuxeo-unique-serial-number-web-ui/README.md) contains the Asset layouts.
+The Marketplace ZIP is written to `nuxeo-unique-serial-number-package/target/2025.26.16/`. Install the matching Marketplace ZIP with `nuxeoctl mp-install <path-to-zip>` on a stopped server with the matching Polymer Web UI package. Both UIs keep their Asset layouts in the `nuxeo-unique-serial-number-web-ui` module. Maven packages the Polymer HTML from the web resources. The Angular layouts build from `custom/layouts/Asset/` with the LTS 2025 host application. See the [UI integration instructions](nuxeo-unique-serial-number-web-ui/README.md).
 
 The Maven test suite uses Nuxeo’s FeaturesRunner, including HTTP document creation. Native media tests use ImageMagick and FFmpeg.
 

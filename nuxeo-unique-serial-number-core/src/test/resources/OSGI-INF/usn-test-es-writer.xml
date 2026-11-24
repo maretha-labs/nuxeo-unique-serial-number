@@ -1,6 +1,0 @@
-<component name="io.maretha.asset.usn.test.es.writer">
-  <require>org.nuxeo.elasticsearch.ElasticSearchComponent.contrib</require>
-  <extension target="org.nuxeo.elasticsearch.ElasticSearchComponent" point="elasticSearchDocWriter">
-    <writer class="io.maretha.asset.usn.search.TestAssetSearchWriter$CustomWriter"/>
-  </extension>
-</component>

@@ -15,7 +15,7 @@
  */
 package io.maretha.asset.usn.listener;
 
-import javax.transaction.Synchronization;
+import jakarta.transaction.Synchronization;
 
 import org.nuxeo.runtime.transaction.TransactionHelper;
 
